@@ -1,7 +1,9 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const Login = () => {
+
   return (
     <div className="flex justify-center items-center h-screen bg-third px-4">
       <div>
@@ -35,7 +37,7 @@ const Login = () => {
             </div>
 
             <div className="flex justify-center px-12">
-              <button className="bg-semiBlack text-white w-full px-10 py-2 rounded-3xl mt-4">Login</button>
+              <Link className="bg-semiBlack text-white w-full px-10 py-2 rounded-3xl mt-4 text-center" href={'/dashboard'}>Login</Link>
             </div>
           </div>
         </div>
