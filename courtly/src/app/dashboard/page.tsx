@@ -40,6 +40,17 @@ const Dashboard = () => {
         },
       ];
 
+    const courtNames = [
+        "Alpha",
+        "Bravo",
+        "Charlie",
+        "Delta",
+        "Echo",
+        "Foxtrot",
+        "Golf",
+        "Hotel",
+    ]
+
   return (
     <div className='flex justify-center items-center bg-second h-auto 2xl:h-screen py-12 md:py-24 2xl:py-0'>
         <div className='h-4/5 space-y-3 w-11/12'>
@@ -84,7 +95,7 @@ const Dashboard = () => {
                     ))}
 
                     {members.map((member, index) => (
-                        <div key={index} className='md:hidden grid grid-cols-2 font-poppins font-extralight text-xs gap-x-6'>
+                        <div key={index} className='md:hidden grid grid-cols-2 font-poppins font-extralight text-sm gap-x-6'>
                             <div>
                                 <h3 className='font-bold'>Full name</h3>
                                 <h3 className='font-bold'>Email</h3>
@@ -105,9 +116,19 @@ const Dashboard = () => {
  
             </div>
 
-            <div className='bg-fourth h-1/3 p-8 rounded-2xl'>
+            <div className='bg-fourth h-auto p-8 rounded-2xl space-y-3'>
                 <div>
                     <h1 className='text-4xl font-poppins font-bold'>Court Reservations</h1>
+                </div>
+
+                <div className='grid md:grid-cols-4 xl:grid-cols-8 gap-x-3 gap-y-4'>
+                    {courtNames.map((court, index) => (
+                        <div key={index} className='bg-third p-4 rounded-xl w-full'>
+                            <h1>
+                                <span className='font-bold'>{court}</span>
+                            </h1>
+                        </div>
+                    ))} 
                 </div>
             </div>
             
