@@ -45,9 +45,9 @@ const Reservations = () => {
   ];
 
   return (
-    <div className="flex justify-center items-center h-auto md:h-screen bg-first p-3 md:p-16">
-      <div className="space-y-5">
-        <div className="bg-fourth md:h-4/6 xl:h-3/4 p-8 md:p-8 xl:py-24 xl:px-24 font-bold rounded-2xl">
+    <div className="flex justify-center items-center h-auto md:h-screen bg-first p-3 md:px-16 md:py-24">
+      <div className="space-y-5 w-screen">
+        <div className="bg-fourth p-8 md:p-8 xl:py-24 xl:px-24 font-bold rounded-2xl">
           <div className="md:flex justify-between items-center space-y-3 md:space-y-0">
             <h1 className="text-4xl font-poppins">{`Court ${court} Reservations`}</h1>
 
