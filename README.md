@@ -49,7 +49,7 @@ Before running the project, ensure you have the following installed:
    npm install
    ```
 4. **Run the app:**
-```bash
+   ```bash
    npm run dev
    ```
 
