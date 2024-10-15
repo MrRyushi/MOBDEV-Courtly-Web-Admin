@@ -1,4 +1,5 @@
 import React from 'react'
+import CourtBtn from '../components/CourtBtn';
 
 const Dashboard = () => {
     // dummy data for members for now
@@ -50,11 +51,25 @@ const Dashboard = () => {
         "Golf",
         "Hotel",
     ]
+    
 
   return (
-    <div className='flex justify-center items-center bg-second h-auto 2xl:h-screen py-12 md:py-24 2xl:py-0'>
-        <div className='h-4/5 space-y-3 w-11/12'>
-            <div className='bg-fourth rounded-xl p-8 md:p-8 xl:p-16 font-bold'>
+    <div className='flex justify-center items-center h-auto 2xl:h-screen'>
+        <div className='md:h-screen 2xl:h-screen w-screen'>
+            <div className='bg-first md:h-2/6 xl:h-1/4 px-3 py-5 md:py-12 md:px-16 space-y-6'>
+                <div>
+                    <h1 className='text-4xl text-slate-50 font-poppins font-bold'>Court Reservations</h1>
+                </div>
+
+                <div className='grid grid-cols-3 md:grid-cols-4 xl:grid-cols-8 gap-x-3 gap-y-4'>
+                    {courtNames.map((court, index) => (
+                        <CourtBtn key={index} index={index} court={court} />
+                    ))} 
+                </div>
+
+            </div>
+
+            <div className='bg-fourth md:h-4/6 xl:h-3/4 p-8 md:p-8 xl:py-12 xl:px-16 font-bold'>
                 <div className='md:flex justify-between items-center space-y-3 md:space-y-0'>
                     <h1 className='text-4xl font-poppins'>Courtly Members</h1>
 
@@ -72,9 +87,9 @@ const Dashboard = () => {
                 </div>
 
                 <hr className="hidden md:block h-px my-8 bg-gray-200 border-0 dark:bg-gray-400"/>
-                <div className='hidden md:grid grid-cols-6 gap-x-3'>
+                <div className='hidden md:grid md:grid-cols-6 lg:grid-cols-5 gap-x-3'>
                     <h3>Full name</h3>
-                    <h3 className='col-span-2'>Email</h3>
+                    <h3 className='md:col-span-2 lg:col-span-1'>Email</h3>
                     <h3>Member since</h3>
                     <h3>Total reservations made</h3>
                     <h3>Recent reservation</h3>
@@ -85,9 +100,9 @@ const Dashboard = () => {
                 {/* Mapping through the members array */}
                 <div className='space-y-6 md:space-y-3'>
                     {members.map((member, index) => (
-                        <div key={index} className='hidden md:grid grid-cols-6 font-poppins font-extralight gap-x-3'>
+                        <div key={index} className='hidden md:grid md:grid-cols-6 lg:grid-cols-5 font-poppins font-extralight gap-x-3'>
                             <p>{member.fullName}</p>
-                            <p className='col-span-2'>{member.email}</p>
+                            <p className='md:col-span-2 lg:col-span-1'>{member.email}</p>
                             <p>{member.memberSince}</p>
                             <p>{member.totalReservations}</p>
                             <p>{member.recentReservation}</p>
@@ -113,25 +128,7 @@ const Dashboard = () => {
                         </div>
                     ))}     
                 </div>
- 
             </div>
-
-            <div className='bg-fourth h-auto p-8 rounded-2xl space-y-3'>
-                <div>
-                    <h1 className='text-4xl font-poppins font-bold'>Court Reservations</h1>
-                </div>
-
-                <div className='grid md:grid-cols-4 xl:grid-cols-8 gap-x-3 gap-y-4'>
-                    {courtNames.map((court, index) => (
-                        <div key={index} className='bg-third p-4 rounded-xl w-full'>
-                            <h1>
-                                <span className='font-bold'>{court}</span>
-                            </h1>
-                        </div>
-                    ))} 
-                </div>
-            </div>
-            
         </div>
     </div>
   )
