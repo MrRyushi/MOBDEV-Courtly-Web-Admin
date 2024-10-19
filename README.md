@@ -42,7 +42,7 @@ Before running the project, ensure you have the following installed:
    ```
 2. **Navigate to the project directory:**
    ```bash
-   cd badminton-reservation-admin
+   cd courtly
    ```
 3. **Install dependencies:**
    ```bash
