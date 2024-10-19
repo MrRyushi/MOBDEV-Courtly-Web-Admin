@@ -13,7 +13,8 @@ const config: Config = {
         second: "#982B1C",
         third: "#DAD4B5",
         fourth: "#F2E8C6",
-        semiBlack: "#212227"
+        semiBlack: "#212227",
+        darkBeige: "#DAD4B5",
       },
     },
   },

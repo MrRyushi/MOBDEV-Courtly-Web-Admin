@@ -79,15 +79,20 @@ const Reservations = () => {
             <h1 className="text-4xl font-poppins">{`Court ${court} Reservations`}</h1>
 
             <div className="flex justify-between gap-x-12">
-              <div>
+              {/* Current Members */}
+              <div className="flex flex-col items-center">
                 <h2 className="font-bold text-4xl md:text-center" id="currentMembers">
                   34
                 </h2>
                 <p className="md:text-center font-poppins font-light">Current Members</p>
               </div>
 
-              <div>
-                <h2 className="font-bold text-4xl md:text-center" id="currentMembers">
+              {/* Vertical divider between Current Members and Member Requests */}
+              <div className="border-l border-gray-400 h-16"></div>
+
+              {/* Member Requests */}
+              <div className="flex flex-col items-center">
+                <h2 className="font-bold text-4xl md:text-center" id="memberRequests">
                   16
                 </h2>
                 <p className="md:text-center font-poppins font-light">Member Requests</p>
@@ -95,7 +100,9 @@ const Reservations = () => {
             </div>
           </div>
 
-          <hr className="hidden md:block h-px my-8 bg-gray-200 border-0 dark:bg-gray-400" />
+          <hr className="hidden md:block h-px my-8 bg-gray-200 border-l border-gray-400" />
+
+          {/* Column headers */}
           <div className="hidden md:grid md:grid-cols-6 lg:grid-cols-5 gap-x-10">
             <h3 onClick={() => sortMembers('fullName')} className="cursor-pointer hover:underline underline-offset-4">
               Full Name {sortIcon}
@@ -107,8 +114,10 @@ const Reservations = () => {
             </h3>
             <h3>Reservation Time</h3>
           </div>
-          <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-400" />
 
+          <hr className="h-px my-8 bg-gray-200 border-l border-gray-400" />
+
+          {/* Member rows */}
           <div className="space-y-6 md:space-y-3">
             {members.map((member, index) => (
               <div
@@ -123,10 +132,11 @@ const Reservations = () => {
               </div>
             ))}
 
+            {/* Mobile version */}
             {members.map((member, index) => (
               <div
                 key={index}
-                className="md:hidden grid grid-cols-2 font-poppins font-extralight text-sm gap-x-6"
+                className="md:hidden grid grid-cols-2 font-poppins font-extralight text-sm gap-x-6 border-b border-gray-300 pb-3"
               >
                 <div>
                   <h3 className="font-bold">Full name</h3>
@@ -153,7 +163,8 @@ const Reservations = () => {
           </Link>
         </div>
       </div>
-    </div>
+  </div>
+
   );
 };
 

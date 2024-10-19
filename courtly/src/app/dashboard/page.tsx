@@ -1,4 +1,5 @@
 import CourtBtn from '../components/CourtBtn';
+import Link from 'next/link'
 import ClientMembersTable from '../components/ClientMembersTable';
 
 const Dashboard = () => {
@@ -71,19 +72,30 @@ const Dashboard = () => {
                         <h1 className='text-4xl font-poppins'>Courtly Members</h1>
 
                         <div className='flex justify-between gap-x-12'>
-                            <div>
-                                <h2 className='font-bold text-4xl md:text-center' id='currentMembers'>34</h2>
-                                <p className='md:text-center font-poppins font-light'>Current Members</p>
+                        <div className="group hover:bg-darkBeige transition duration-300 ease-in-out"> 
+                                <Link href="/members" passHref>
+                                    <div className='cursor-pointer p-2'> {/* Add padding for better hover effect */}  
+                                        <h2 className='font-bold text-4xl md:text-center' id='currentMembers'>34</h2>
+                                        <p className='md:text-center font-poppins font-light'>Current Members</p>
+                                    </div>
+                                </Link>
                             </div>
 
-                            <div>
-                                <h2 className='font-bold text-4xl md:text-center' id='currentMembers'>16</h2>
-                                <p className='md:text-center font-poppins font-light'>Member Requests</p>
+                            {/* Vertical divider between Current Members and Member Requests */}
+                            <div className="border-l border-gray-400 h-18"></div>
+
+                            <div className="group hover:bg-darkBeige transition duration-300 ease-in-out"> 
+                                <Link href="/member_requests" passHref>
+                                    <div className='cursor-pointer p-2'> {/* Add padding for better hover effect */}
+                                        <h2 className='font-bold text-4xl md:text-center' id='currentMembers'>16</h2>
+                                        <p className='md:text-center font-poppins font-light'>Member Requests</p>
+                                    </div>
+                                </Link>
                             </div>
                         </div>
                     </div>
 
-                    <hr className="hidden md:block h-px my-8 bg-gray-200 border-0 dark:bg-gray-400"/>
+                    <hr className="hidden md:block h-px my-8 bg-gray-200 border-l border-gray-400"/>
                     
                     {/* Render client-side table */}
                     <ClientMembersTable initialMembers={members} />
