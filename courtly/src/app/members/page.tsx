@@ -42,7 +42,6 @@ const MembersPage = () => {
             totalReservations: 4,
             recentReservation: "2024-10-06",
         },
-
         {
             fullName: "Charlie Black",
             email: "charlie@example.com",
@@ -123,15 +122,15 @@ const MembersPage = () => {
     ];
 
     // Filter members based on the search term
-    // const filteredMembers = members.filter(member =>
-    //     member.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     member.email.toLowerCase().includes(searchTerm.toLowerCase())
-    // );
+    const filteredMembers = members.filter(member =>
+        member.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        member.email.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <div className="flex justify-center items-center h-auto md:h-screen bg-first p-3 md:px-16 md:py-24">
             <div className="space-y-5 w-screen">
-                <div className="bg-fourth p-12 md:p-16 lg:p-20 font-bold rounded-2xl max-h-[500px] overflow-auto">
+                <div className="bg-fourth p-12 md:p-16 lg:p-20 font-bold rounded-2xl">
                     <h1 className="text-4xl font-poppins mb-4">Members</h1>
 
                     {/* Search Bar */}
@@ -148,7 +147,7 @@ const MembersPage = () => {
                     <hr className="h-px my-8 bg-gray-200 border-l border-gray-400" />
 
                     {/* Render client-side table with filtered members */}
-                    {<ClientMembersTable initialMembers={members} ></ClientMembersTable>} 
+                    {<ClientMembersTable initialMembers={filteredMembers} ></ClientMembersTable>} 
                     
                 </div>
 

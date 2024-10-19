@@ -69,14 +69,14 @@ const Dashboard = () => {
 
                 <div className='bg-fourth md:h-4/6 xl:h-3/4 p-8 md:p-8 xl:py-12 xl:px-16 font-bold'>
                     <div className='md:flex justify-between items-center space-y-3 md:space-y-0'>
-                        <h1 className='text-4xl font-poppins'>Courtly Members</h1>
+                        <h1 className='text-4xl font-poppins'>Top Courtly Members</h1>
 
                         <div className='flex justify-between gap-x-12'>
-                        <div className="group hover:bg-darkBeige transition duration-300 ease-in-out"> 
+                            <div className="group hover:bg-darkBeige rounded-2xl transition duration-300 ease-in-out"> 
                                 <Link href="/members" passHref>
                                     <div className='cursor-pointer p-2'> {/* Add padding for better hover effect */}  
                                         <h2 className='font-bold text-4xl md:text-center' id='currentMembers'>34</h2>
-                                        <p className='md:text-center font-poppins font-light'>Current Members</p>
+                                        <p className='md:text-center font-poppins font-light '>Current Members</p>
                                     </div>
                                 </Link>
                             </div>
@@ -84,7 +84,7 @@ const Dashboard = () => {
                             {/* Vertical divider between Current Members and Member Requests */}
                             <div className="border-l border-gray-400 h-18"></div>
 
-                            <div className="group hover:bg-darkBeige transition duration-300 ease-in-out"> 
+                            <div className="group hover:bg-darkBeige rounded-2xl transition duration-300 ease-in-out"> 
                                 <Link href="/member_requests" passHref>
                                     <div className='cursor-pointer p-2'> {/* Add padding for better hover effect */}
                                         <h2 className='font-bold text-4xl md:text-center' id='currentMembers'>16</h2>

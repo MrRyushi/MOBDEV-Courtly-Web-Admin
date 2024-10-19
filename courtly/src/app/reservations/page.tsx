@@ -46,6 +46,106 @@ const Reservations = () => {
       reservationDate: '2024-10-10',
       reservationTime: "12:00 AM - 01:00 PM",
     },
+    {
+      fullName: "Bob White",
+      email: "bob@example.com",
+      member: "No",
+      reservationDate: '2024-10-10',
+      reservationTime: "12:00 AM - 01:00 PM",
+    },
+    {
+      fullName: "Bob White",
+      email: "bob@example.com",
+      member: "No",
+      reservationDate: '2024-10-10',
+      reservationTime: "12:00 AM - 01:00 PM",
+    },
+    {
+      fullName: "Bob White",
+      email: "bob@example.com",
+      member: "No",
+      reservationDate: '2024-10-10',
+      reservationTime: "12:00 AM - 01:00 PM",
+    },
+    {
+      fullName: "Bob White",
+      email: "bob@example.com",
+      member: "No",
+      reservationDate: '2024-10-10',
+      reservationTime: "12:00 AM - 01:00 PM",
+    },
+    {
+      fullName: "Bob White",
+      email: "bob@example.com",
+      member: "No",
+      reservationDate: '2024-10-10',
+      reservationTime: "12:00 AM - 01:00 PM",
+    },
+    {
+      fullName: "Bob White",
+      email: "bob@example.com",
+      member: "No",
+      reservationDate: '2024-10-10',
+      reservationTime: "12:00 AM - 01:00 PM",
+    },
+    {
+      fullName: "Bob White",
+      email: "bob@example.com",
+      member: "No",
+      reservationDate: '2024-10-10',
+      reservationTime: "12:00 AM - 01:00 PM",
+    },
+    {
+      fullName: "Bob White",
+      email: "bob@example.com",
+      member: "No",
+      reservationDate: '2024-10-10',
+      reservationTime: "12:00 AM - 01:00 PM",
+    },
+    {
+      fullName: "Bob White",
+      email: "bob@example.com",
+      member: "No",
+      reservationDate: '2024-10-10',
+      reservationTime: "12:00 AM - 01:00 PM",
+    },
+    {
+      fullName: "Bob White",
+      email: "bob@example.com",
+      member: "No",
+      reservationDate: '2024-10-10',
+      reservationTime: "12:00 AM - 01:00 PM",
+    },
+    {
+      fullName: "Bob White",
+      email: "bob@example.com",
+      member: "No",
+      reservationDate: '2024-10-10',
+      reservationTime: "12:00 AM - 01:00 PM",
+    },
+    {
+      fullName: "Bob White",
+      email: "bob@example.com",
+      member: "No",
+      reservationDate: '2024-10-10',
+      reservationTime: "12:00 AM - 01:00 PM",
+    },
+    {
+      fullName: "Bob White",
+      email: "bob@example.com",
+      member: "No",
+      reservationDate: '2024-10-10',
+      reservationTime: "12:00 AM - 01:00 PM",
+    },
+    {
+      fullName: "Bob White",
+      email: "bob@example.com",
+      member: "No",
+      reservationDate: '2024-10-10',
+      reservationTime: "12:00 AM - 01:00 PM",
+    },
+    
+
   ]);
 
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
@@ -71,33 +171,14 @@ const Reservations = () => {
     setSortConfig({ key, direction });
   };
 
+  // Determine the height class based on the number of member
+
   return (
-    <div className="flex justify-center items-center h-auto md:h-screen bg-first p-3 md:px-16 md:py-24">
+    <div className={`flex justify-center items-center h-auto md:h-screen bg-first p-3 md:px-16 md:py-24`}>
       <div className="space-y-5 w-screen">
         <div className="bg-fourth p-8 md:p-8 xl:py-24 xl:px-24 font-bold rounded-2xl">
           <div className="md:flex justify-between items-center space-y-3 md:space-y-0">
             <h1 className="text-4xl font-poppins">{`Court ${court} Reservations`}</h1>
-
-            <div className="flex justify-between gap-x-12">
-              {/* Current Members */}
-              <div className="flex flex-col items-center">
-                <h2 className="font-bold text-4xl md:text-center" id="currentMembers">
-                  34
-                </h2>
-                <p className="md:text-center font-poppins font-light">Current Members</p>
-              </div>
-
-              {/* Vertical divider between Current Members and Member Requests */}
-              <div className="border-l border-gray-400 h-16"></div>
-
-              {/* Member Requests */}
-              <div className="flex flex-col items-center">
-                <h2 className="font-bold text-4xl md:text-center" id="memberRequests">
-                  16
-                </h2>
-                <p className="md:text-center font-poppins font-light">Member Requests</p>
-              </div>
-            </div>
           </div>
 
           <hr className="hidden md:block h-px my-8 bg-gray-200 border-l border-gray-400" />
@@ -118,7 +199,7 @@ const Reservations = () => {
           <hr className="h-px my-8 bg-gray-200 border-l border-gray-400" />
 
           {/* Member rows */}
-          <div className="space-y-6 md:space-y-3">
+          <div className="space-y-6 md:space-y-3 md:max-h-[400px] overflow-auto">
             {members.map((member, index) => (
               <div
                 key={index}
@@ -163,8 +244,7 @@ const Reservations = () => {
           </Link>
         </div>
       </div>
-  </div>
-
+    </div>
   );
 };
 

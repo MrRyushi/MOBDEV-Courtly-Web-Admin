@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort } from '@fortawesome/free-solid-svg-icons';
 
@@ -27,6 +27,10 @@ const ClientMembersTable = ({ initialMembers }) => {
         setMembers(sortedMembers);
     };
 
+    useEffect(() => {
+        setMembers(initialMembers);
+    }, [initialMembers]);
+
     return (
         <div className='space-y-6'>
             {/* Table header */}
@@ -39,7 +43,7 @@ const ClientMembersTable = ({ initialMembers }) => {
             </div>
 
             {/* Scrollable container */}
-                <div className='space-y-6 md:space-y-3'>
+                <div className='space-y-6 md:space-y-3 md:max-h-[400px] overflow-auto'>
                     {members.map((member, index) => (
                         <div key={index} className='hidden md:grid md:grid-cols-6 lg:grid-cols-5 font-poppins font-extralight gap-x-3'>
                             <p>{member.fullName}</p>
