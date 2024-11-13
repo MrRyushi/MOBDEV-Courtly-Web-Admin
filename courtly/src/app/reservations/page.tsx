@@ -1,152 +1,76 @@
 'use client'
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from 'next/navigation';
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort } from '@fortawesome/free-solid-svg-icons';
+import { database} from '../firebaseConfig'
+import { ref, get, set } from "firebase/database"; // Import these functions
 
 const Reservations = () => {
   const searchParams = useSearchParams();
   const court = searchParams.get('court');
   const sortIcon = <FontAwesomeIcon icon={faSort} />;
+  const [users, setUsers] = useState([]);
+  const [reservations, setReservations] = useState([]);
+  const [filteredReservations, setFilteredReservations] = useState([]);
 
-  const [members, setMembers] = useState([
-    {
-      fullName: "John Doe",
-      email: "john@example.com",
-      member: "Yes",
-      reservationDate: '2024-06-10',
-      reservationTime: "6:00 AM - 7:00 AM",
-    },
-    {
-      fullName: "Jane Smith",
-      email: "jane@example.com",
-      member: "No",
-      reservationDate: '2024-07-10',
-      reservationTime: "7:00 AM - 8:00 AM",
-    },
-    {
-      fullName: "Sam Green",
-      email: "sam@example.com",
-      member: "No",
-      reservationDate: '2024-08-10',
-      reservationTime: "8:00 AM - 9:00 AM",
-    },
-    {
-      fullName: "Alice Brown",
-      email: "alice@example.com",
-      member: "Yes",
-      reservationDate: '2024-09-10',
-      reservationTime: "10:00 AM - 11:00 AM",
-    },
-    {
-      fullName: "Bob White",
-      email: "bob@example.com",
-      member: "No",
-      reservationDate: '2024-10-10',
-      reservationTime: "12:00 AM - 01:00 PM",
-    },
-    {
-      fullName: "Bob White",
-      email: "bob@example.com",
-      member: "No",
-      reservationDate: '2024-10-10',
-      reservationTime: "12:00 AM - 01:00 PM",
-    },
-    {
-      fullName: "Bob White",
-      email: "bob@example.com",
-      member: "No",
-      reservationDate: '2024-10-10',
-      reservationTime: "12:00 AM - 01:00 PM",
-    },
-    {
-      fullName: "Bob White",
-      email: "bob@example.com",
-      member: "No",
-      reservationDate: '2024-10-10',
-      reservationTime: "12:00 AM - 01:00 PM",
-    },
-    {
-      fullName: "Bob White",
-      email: "bob@example.com",
-      member: "No",
-      reservationDate: '2024-10-10',
-      reservationTime: "12:00 AM - 01:00 PM",
-    },
-    {
-      fullName: "Bob White",
-      email: "bob@example.com",
-      member: "No",
-      reservationDate: '2024-10-10',
-      reservationTime: "12:00 AM - 01:00 PM",
-    },
-    {
-      fullName: "Bob White",
-      email: "bob@example.com",
-      member: "No",
-      reservationDate: '2024-10-10',
-      reservationTime: "12:00 AM - 01:00 PM",
-    },
-    {
-      fullName: "Bob White",
-      email: "bob@example.com",
-      member: "No",
-      reservationDate: '2024-10-10',
-      reservationTime: "12:00 AM - 01:00 PM",
-    },
-    {
-      fullName: "Bob White",
-      email: "bob@example.com",
-      member: "No",
-      reservationDate: '2024-10-10',
-      reservationTime: "12:00 AM - 01:00 PM",
-    },
-    {
-      fullName: "Bob White",
-      email: "bob@example.com",
-      member: "No",
-      reservationDate: '2024-10-10',
-      reservationTime: "12:00 AM - 01:00 PM",
-    },
-    {
-      fullName: "Bob White",
-      email: "bob@example.com",
-      member: "No",
-      reservationDate: '2024-10-10',
-      reservationTime: "12:00 AM - 01:00 PM",
-    },
-    {
-      fullName: "Bob White",
-      email: "bob@example.com",
-      member: "No",
-      reservationDate: '2024-10-10',
-      reservationTime: "12:00 AM - 01:00 PM",
-    },
-    {
-      fullName: "Bob White",
-      email: "bob@example.com",
-      member: "No",
-      reservationDate: '2024-10-10',
-      reservationTime: "12:00 AM - 01:00 PM",
-    },
-    {
-      fullName: "Bob White",
-      email: "bob@example.com",
-      member: "No",
-      reservationDate: '2024-10-10',
-      reservationTime: "12:00 AM - 01:00 PM",
-    },
-    {
-      fullName: "Bob White",
-      email: "bob@example.com",
-      member: "No",
-      reservationDate: '2024-10-10',
-      reservationTime: "12:00 AM - 01:00 PM",
-    },
-    
+  // Fetch users from Firebase
+  useEffect(() => {
+    const usersRef = ref(database, 'users');
+    get(usersRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        const usersArray = Object.entries(snapshot.val()).map(([id, data]) => ({
+          id, 
+          ...data, 
+        }));
+        setUsers(usersArray);
+      } else {
+        console.log("No user data available");
+      }
+    }).catch((error) => console.log(error));
+  }, []);
+  
+  // Fetch reservations from Firebase
+  useEffect(() => {
+    const reservationsRef = ref(database, 'reservations');
+    get(reservationsRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        const reservationsArray = Object.entries(snapshot.val()).map(([id, data]) => ({
+          id, 
+          ...data, 
+        }));
+        setReservations(reservationsArray);
+      } else {
+        console.log("No reservation data available");
+      }
+    }).catch((error) => console.log(error));
+  }, []);
 
-  ]);
+  // Merge reservations and users after both data sets have loaded
+  useEffect(() => {
+    const combinedData = [];
+    if (reservations.length > 0 && users.length > 0) {
+      for(let i = 0; i < reservations.length; i++) {
+        for(let j = 0; j < users.length; j++) {
+          if(reservations[i].userId === users[j].id) {
+            if(reservations[i].courtName === `Court ${court}`){
+              combinedData.push({
+                fullName: users[j].fullName,
+                email: users[j].email,
+                member: users[j].member ? 'Yes' : 'No',
+                reservationDate: reservations[i].date,
+                courtName: reservations[i].courtName,
+                reservationTime: reservations[i].timeSlots.join(', '), // Join array into a single string
+              });       
+            }     
+          }
+        }
+      }
+      setFilteredReservations(combinedData);
+    }
+  }, [reservations, users]);
+
 
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
 
@@ -157,7 +81,7 @@ const Reservations = () => {
       direction = 'descending';
     }
 
-    const sortedMembers = [...members].sort((a, b) => {
+    const sortedFilteredReservations = [...filteredReservations].sort((a, b) => {
       if (a[key] < b[key]) {
         return direction === 'ascending' ? -1 : 1;
       }
@@ -167,15 +91,13 @@ const Reservations = () => {
       return 0;
     });
 
-    setMembers(sortedMembers);
+    setFilteredReservations(sortedFilteredReservations);
     setSortConfig({ key, direction });
   };
 
-  // Determine the height class based on the number of member
-
   return (
     <div className={`flex justify-center items-center h-auto md:h-screen bg-first p-3 md:px-16 md:py-24`}>
-      <div className="space-y-5 w-screen">
+      {<div className="space-y-5 w-screen">
         <div className="bg-fourth p-8 md:p-8 xl:py-24 xl:px-24 font-bold rounded-2xl">
           <div className="md:flex justify-between items-center space-y-3 md:space-y-0">
             <h1 className="text-4xl font-poppins">{`Court ${court} Reservations`}</h1>
@@ -200,7 +122,7 @@ const Reservations = () => {
 
           {/* Member rows */}
           <div className="space-y-6 md:space-y-3 md:max-h-[400px] overflow-auto">
-            {members.map((member, index) => (
+            {filteredReservations.map((member, index) => (
               <div
                 key={index}
                 className="hidden md:grid md:grid-cols-6 lg:grid-cols-5 font-poppins font-extralight gap-x-10"
@@ -214,7 +136,7 @@ const Reservations = () => {
             ))}
 
             {/* Mobile version */}
-            {members.map((member, index) => (
+            {filteredReservations.map((member, index) => (
               <div
                 key={index}
                 className="md:hidden grid grid-cols-2 font-poppins font-extralight text-sm gap-x-6 border-b border-gray-300 pb-3"
@@ -243,7 +165,7 @@ const Reservations = () => {
             Back
           </Link>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };
