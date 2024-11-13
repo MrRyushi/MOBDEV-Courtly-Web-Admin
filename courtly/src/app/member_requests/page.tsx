@@ -1,113 +1,73 @@
 'use client';
 
-import React, { useState } from 'react';
+import { database} from '../firebaseConfig'
+import { useEffect, useState } from 'react';
+import { ref, get, update } from "firebase/database"; // Import these functions
 import Link from 'next/link';
 
 const MemberRequestsPage = () => {
-    const initialRequests = [
-        {
-            fullName: "Charlie Black",
-            email: "charlie@example.com",
-            dateRequested: "2024-10-15",
-        },
-        {
-            fullName: "Charlie Gray",
-            email: "charlie@example.com",
-            dateRequested: "2024-10-15",
-        },
-        {
-            fullName: "Charlie White",
-            email: "charlie@example.com",
-            dateRequested: "2024-10-15",
-        },
-        {
-            fullName: "Diana Prince",
-            email: "diana@example.com",
-            dateRequested: "2024-10-16",
-        },
-        {
-            fullName: "Diana Ponce",
-            email: "diana@example.com",
-            dateRequested: "2024-10-16",
+    const [users, setUsers] = useState([]);
+    const [requests, setRequests] = useState([]);
 
-        },
-        {
-            fullName: "Diana Punch",
-            email: "diana@example.com",
-            dateRequested: "2024-10-16",
-        },
-        {
-            fullName: "Diana Pratt",
-            email: "diana@example.com",
-            dateRequested: "2024-10-16",
-        },
-        {
-            fullName: "Emily Green",
-            email: "emily@example.com",
-            dateRequested: "2024-10-17",
-        },
-        {
-            fullName: "George Blue",
-            email: "george@example.com",
-            dateRequested: "2024-10-18",
-        },
-        {
-            fullName: "Hannah Red",
-            email: "hannah@example.com",
-            dateRequested: "2024-10-19",
-        },
-        {
-            fullName: "Isaac Orange",
-            email: "isaac@example.com",
-            dateRequested: "2024-10-20",
-        },
-        {
-            fullName: "Julia Violet",
-            email: "julia@example.com",
-            dateRequested: "2024-10-21",
-        },
-        {
-            fullName: "Kevin Brown",
-            email: "kevin@example.com",
-            dateRequested: "2024-10-22",
-        },
-        {
-            fullName: "Lily Pink",
-            email: "lily@example.com",
-            dateRequested: "2024-10-23",
-        },
-        {
-            fullName: "Michael Silver",
-            email: "michael@example.com",
-            dateRequested: "2024-10-24",
-        },
-        {
-            fullName: "Natalie Gold",
-            email: "natalie@example.com",
-            dateRequested: "2024-10-25",
-        },
-        {
-            fullName: "Oliver Cyan",
-            email: "oliver@example.com",
-            dateRequested: "2024-10-26",
-        }
-        
-    ];
-
-    const [requests, setRequests] = useState(initialRequests);
+    useEffect(() => {
+        // Get a reference to the 'users' node
+        const usersRef = ref(database, 'users');
+        get(usersRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const usersArray = Object.entries(snapshot.val()).map(([id, data]) => ({
+                    id, 
+                    ...data, 
+                }));
+                // Set the users state to the array of users
+                setUsers(usersArray);
+    
+                // Filter the users array to get only the members
+                const arrayRequests = usersArray.filter(user => user.membershipStatus === "Sent request");
+    
+                setRequests(arrayRequests);
+            } else {
+                console.log("No data available");
+            }
+           
+        }).catch((error) => {
+            console.log(error);    
+        });
+    }, []);
 
     const handleAccept = (index) => {
-        // Logic to accept the member request
-        const updatedRequests = [...requests];
-        updatedRequests.splice(index, 1); // Remove accepted request
-        setRequests(updatedRequests);
+        const request = requests[index];
+        const userRef = ref(database, `users/${request.id}`);
+
+        // Update membership status to "Completed" and member to true
+        update(userRef, {
+            membershipStatus: "Completed",
+            member: true
+        }).then(() => {
+            // Remove the request from the local state
+            const updatedRequests = [...requests];
+            updatedRequests.splice(index, 1);
+            setRequests(updatedRequests);
+        }).catch((error) => {
+            console.log("Error updating membership status:", error);
+        });
     };
 
     const handleReject = (index) => {
-        // Logic to reject the member request
-        const updatedRequests = [...requests];
-        updatedRequests.splice(index, 1); // Remove rejected request
-        setRequests(updatedRequests);
+        const request = requests[index];
+        const userRef = ref(database, `users/${request.id}`);
+
+        // Update membership status to "Rejected" and keep member as false
+        update(userRef, {
+            membershipStatus: "Rejected",
+            member: false
+        }).then(() => {
+            // Remove the request from the local state
+            const updatedRequests = [...requests];
+            updatedRequests.splice(index, 1);
+            setRequests(updatedRequests);
+        }).catch((error) => {
+            console.log("Error updating membership status:", error);
+        });
     };
 
 
