@@ -31,6 +31,12 @@ const ClientMembersTable = ({ initialMembers }) => {
         setMembers(initialMembers);
     }, [initialMembers]);
 
+    function formatDate(memberSince) {
+        const date = new Date(memberSince);
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; // Corrected types
+        return date.toLocaleDateString('en-US', options);
+    }
+
     return (
         <div className='space-y-6'>
             {/* Table header */}
@@ -43,17 +49,19 @@ const ClientMembersTable = ({ initialMembers }) => {
             </div>
 
             {/* Scrollable container */}
+
                 <div className='space-y-6 md:space-y-3 md:max-h-[400px] overflow-auto'>
                     {members.map((member, index) => (
                         <div key={index} className='hidden md:grid md:grid-cols-6 lg:grid-cols-5 font-poppins font-extralight gap-x-3'>
                             <p>{member.fullName}</p>
                             <p className='md:col-span-2 lg:col-span-1'>{member.email}</p>
-                            <p>{member.memberSince}</p>
+                            <p>{formatDate(member.memberSince)}</p>
                             <p>{member.totalReservations}</p>
-                            <p>{member.recentReservation}</p>
+                            <p>{formatDate(member.recentReservation)}</p>
                         </div>
                     ))}
 
+                    {/* Responsive rendering */}
                     {members.map((member, index) => (
                         <div key={index} className='md:hidden grid grid-cols-2 font-poppins font-extralight text-sm gap-x-6'>
                             <div>

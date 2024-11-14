@@ -70,6 +70,11 @@ const MemberRequestsPage = () => {
         });
     };
 
+    function formatDate(memberSince) {
+        const date = new Date(memberSince);
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; // Corrected types
+        return date.toLocaleDateString('en-US', options);
+    }
 
     return (
         <div className={`flex justify-center items-center h-auto md:h-screen bg-first p-3 lg:px-16 md:py-24`}>
@@ -96,7 +101,7 @@ const MemberRequestsPage = () => {
                                 <div key={index} className='grid md:grid-cols-4 gap-x-3'>
                                     <p className="font-normal">{request.fullName}</p> 
                                     <p className="font-normal">{request.email}</p> 
-                                    <p className="font-normal">{request.dateRequested}</p> 
+                                    <p className="font-normal">{formatDate(request.dateRequested)}</p> 
                                     <div className="flex space-x-2">
                                         <button onClick={() => handleAccept(index)} className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded">Accept</button>
                                         <button onClick={() => handleReject(index)} className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded">Reject</button>
