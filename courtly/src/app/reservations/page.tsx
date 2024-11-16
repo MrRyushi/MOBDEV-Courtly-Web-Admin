@@ -95,6 +95,11 @@ const Reservations = () => {
     setSortConfig({ key, direction });
   };
 
+  function formatDate(memberSince) {
+    const date = new Date(memberSince);
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; // Corrected types
+    return date.toLocaleDateString('en-US', options);
+}
   return (
     <div className={`flex justify-center items-center h-auto md:h-screen bg-first p-3 md:px-16 md:py-24`}>
       {<div className="space-y-5 w-screen">
@@ -130,7 +135,7 @@ const Reservations = () => {
                 <p>{member.fullName}</p>
                 <p className="md:col-span-2 lg:col-span-1">{member.email}</p>
                 <p>{member.member}</p>
-                <p>{member.reservationDate}</p>
+                <p>{formatDate(member.reservationDate)}</p>
                 <p>{member.reservationTime}</p>
               </div>
             ))}
