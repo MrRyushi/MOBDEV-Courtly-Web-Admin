@@ -1,125 +1,41 @@
 'use client';
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ClientMembersTable from '../components/ClientMembersTable';
 import Link from 'next/link';
+import { database} from '../firebaseConfig'
+import { ref, get } from "firebase/database"; // Import these functions
+
 
 const MembersPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
+    const [users, setUsers] = useState([]);
+    const [members, setMembers] = useState([]);
 
-    const members = [
-        {
-            fullName: "John Doe",
-            email: "john@example.com",
-            memberSince: "2020-01-01",
-            totalReservations: 5,
-            recentReservation: "2024-10-10",
-        },
-        {
-            fullName: "Jane Smith",
-            email: "jane@example.com",
-            memberSince: "2021-02-02",
-            totalReservations: 8,
-            recentReservation: "2024-10-09",
-        },
-        {
-            fullName: "Sam Green",
-            email: "sam@example.com",
-            memberSince: "2022-03-03",
-            totalReservations: 10,
-            recentReservation: "2024-10-08",
-        },
-        {
-            fullName: "Alice Brown",
-            email: "alice@example.com",
-            memberSince: "2023-04-04",
-            totalReservations: 3,
-            recentReservation: "2024-10-07",
-        },
-        {
-            fullName: "Bob White",
-            email: "bob@example.com",
-            memberSince: "2024-05-05",
-            totalReservations: 4,
-            recentReservation: "2024-10-06",
-        },
-        {
-            fullName: "Charlie Black",
-            email: "charlie@example.com",
-            memberSince: "2023-01-15",
-            totalReservations: 2,
-            recentReservation: "2024-10-05",
-        },
-        {
-            fullName: "Diana Prince",
-            email: "diana@example.com",
-            memberSince: "2022-11-20",
-            totalReservations: 6,
-            recentReservation: "2024-09-28",
-        },
-        {
-            fullName: "Ethan Hunt",
-            email: "ethan@example.com",
-            memberSince: "2023-05-11",
-            totalReservations: 1,
-            recentReservation: "2024-10-04",
-        },
-        {
-            fullName: "Fiona Green",
-            email: "fiona@example.com",
-            memberSince: "2021-03-22",
-            totalReservations: 7,
-            recentReservation: "2024-09-30",
-        },
-        {
-            fullName: "George Martin",
-            email: "george@example.com",
-            memberSince: "2022-08-01",
-            totalReservations: 5,
-            recentReservation: "2024-09-25",
-        },
-        {
-            fullName: "Hannah Arendt",
-            email: "hannah@example.com",
-            memberSince: "2020-06-17",
-            totalReservations: 9,
-            recentReservation: "2024-10-02",
-        },
-        {
-            fullName: "Isaac Newton",
-            email: "isaac@example.com",
-            memberSince: "2024-01-14",
-            totalReservations: 3,
-            recentReservation: "2024-09-15",
-        },
-        {
-            fullName: "Jack Sparrow",
-            email: "jack@example.com",
-            memberSince: "2023-04-10",
-            totalReservations: 4,
-            recentReservation: "2024-09-20",
-        },
-        {
-            fullName: "Kelly Clarkson",
-            email: "kelly@example.com",
-            memberSince: "2023-06-22",
-            totalReservations: 2,
-            recentReservation: "2024-10-01",
-        },
-        {
-            fullName: "Liam Neeson",
-            email: "liam@example.com",
-            memberSince: "2021-12-05",
-            totalReservations: 8,
-            recentReservation: "2024-10-03",
-        },
-        {
-            fullName: "Mona Lisa",
-            email: "mona@example.com",
-            memberSince: "2022-10-10",
-            totalReservations: 4,
-            recentReservation: "2024-10-08",
-        },
-    ];
+    useEffect(() => {
+        // Get a reference to the 'users' node
+        const usersRef = ref(database, 'users');
+        get(usersRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const usersArray = Object.entries(snapshot.val()).map(([id, data]) => ({
+                    id, 
+                    ...data, 
+                }));
+                // Set the users state to the array of users
+                setUsers(usersArray);
+    
+                // Filter the users array to get only the members
+                const arrayMembers = usersArray.filter(user => user.member === true);
+    
+                // Set the members state to the top 5 members
+                setMembers(arrayMembers);
+            } else {
+                console.log("No data available");
+            }
+           
+        }).catch((error) => {
+            console.log(error);    
+        });
+    }, []);
 
     // Filter members based on the search term
     const filteredMembers = members.filter(member =>
