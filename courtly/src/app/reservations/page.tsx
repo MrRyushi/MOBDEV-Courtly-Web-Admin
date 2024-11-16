@@ -58,7 +58,7 @@ const Reservations = () => {
               combinedData.push({
                 fullName: users[j].fullName,
                 email: users[j].email,
-                member: users[j].member ? 'Yes' : 'No',
+                member: users[j].isMember ? 'Yes' : 'No',
                 reservationDate: reservations[i].date,
                 courtName: reservations[i].courtName,
                 reservationTime: reservations[i].timeSlots.join(', '), // Join array into a single string
