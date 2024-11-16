@@ -36,7 +36,7 @@ const Dashboard = () => {
                 setMembers(arrayMembers);
     
                 // Filter the users array to get only the members requests
-                const arrayMemberRequests = usersArray.filter(user => user.membershipStatus === "Sent request");
+                const arrayMemberRequests = usersArray.filter(user => user.membershipStatus === "Requested");
     
                 // Set the memberRequests state to the array of member requests
                 setMemberRequests(arrayMemberRequests);

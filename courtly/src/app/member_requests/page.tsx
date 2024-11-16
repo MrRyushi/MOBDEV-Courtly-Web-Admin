@@ -22,7 +22,7 @@ const MemberRequestsPage = () => {
                 setUsers(usersArray);
     
                 // Filter the users array to get only the members
-                const arrayRequests = usersArray.filter(user => user.membershipStatus === "Sent request");
+                const arrayRequests = usersArray.filter(user => user.membershipStatus === "Requested");
     
                 setRequests(arrayRequests);
             } else {
@@ -40,7 +40,7 @@ const MemberRequestsPage = () => {
 
         // Update membership status to "Completed" and member to true
         update(userRef, {
-            membershipStatus: "Completed",
+            membershipStatus: "Approved",
             member: true
         }).then(() => {
             // Remove the request from the local state
