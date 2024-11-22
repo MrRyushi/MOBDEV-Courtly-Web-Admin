@@ -37,20 +37,35 @@ const MemberRequestsPage = () => {
     const handleAccept = (index) => {
         const request = requests[index];
         const userRef = ref(database, `users/${request.id}`);
-
-        // Update membership status to "Completed" and member to true
+    
+        // Helper function to get the current date in dd/mm/yyyy format
+        const getCurrentDate = () => {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0'); // Ensure 2-digit day
+            const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+            const year = today.getFullYear();
+            return `${day}/${month}/${year}`;
+        };
+    
+        const currentDate = getCurrentDate(); // Get the formatted current date
+    
+        // Update membership status to "Approved" and member to true
         update(userRef, {
             membershipStatus: "Approved",
-            member: true
-        }).then(() => {
-            // Remove the request from the local state
-            const updatedRequests = [...requests];
-            updatedRequests.splice(index, 1);
-            setRequests(updatedRequests);
-        }).catch((error) => {
-            console.log("Error updating membership status:", error);
-        });
+            member: true,
+            memberSince: currentDate, // Use formatted date here
+        })
+            .then(() => {
+                // Remove the request from the local state
+                const updatedRequests = [...requests];
+                updatedRequests.splice(index, 1);
+                setRequests(updatedRequests);
+            })
+            .catch((error) => {
+                console.log("Error updating membership status:", error);
+            });
     };
+    
 
     const handleReject = (index) => {
         const request = requests[index];

@@ -24,7 +24,7 @@ const Dashboard = () => {
                 setUsers(usersArray);
     
                 // Filter the users array to get only the members
-                let arrayMembers = usersArray.filter(user => user.member === true);
+                let arrayMembers = usersArray.filter(user => user.member === true || user.isMember === true);
     
                 // Sort the members by totalReservations in descending order
                 arrayMembers = arrayMembers.sort((a, b) => b.totalReservations - a.totalReservations);
