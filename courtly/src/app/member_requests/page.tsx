@@ -86,9 +86,17 @@ const MemberRequestsPage = () => {
     };
 
     function formatDate(memberSince) {
-        const date = new Date(memberSince);
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; // Corrected types
-        return date.toLocaleDateString('en-US', options);
+        // Split the date string into day, month, and year
+        if(memberSince){
+            const [day, month, year] = memberSince.split('/').map(Number); // Convert strings to numbers
+        
+            // Create a new Date object with the parsed values (note: months are 0-indexed in JavaScript)
+            const date = new Date(year, month - 1, day);
+        
+            // Format the date using options
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
     }
 
     return (
