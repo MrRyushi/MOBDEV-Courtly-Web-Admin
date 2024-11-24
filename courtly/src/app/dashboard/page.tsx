@@ -7,9 +7,17 @@ import { useEffect, useState } from 'react';
 import { ref, get } from "firebase/database"; // Import these functions
 
 const Dashboard = () => {
-    const [users, setUsers] = useState([]);
-    const [members, setMembers] = useState([]);
-    const [memberRequests, setMemberRequests] = useState([]);
+    interface Member {
+        id: string;
+        member?: boolean;
+        isMember?: boolean;
+        totalReservations?: number;
+        membershipStatus?: string;
+        [key: string]: string | number | boolean | undefined; // Add this line to allow any additional properties
+    }
+    
+    const [members, setMembers] = useState<Member[]>([]);
+    const [memberRequests, setMemberRequests] = useState<Member[]>([]);
 
     useEffect(() => {
         // Get a reference to the 'users' node
@@ -17,17 +25,16 @@ const Dashboard = () => {
         get(usersRef).then((snapshot) => {
             if (snapshot.exists()) {
                 const usersArray = Object.entries(snapshot.val()).map(([id, data]) => ({
-                    id, 
-                    ...data, 
+                    id,
+                    ...(typeof data === 'object' && data !== null ? data : {}),
+                    totalReservations: (data as { totalReservations?: number }).totalReservations || 0,
                 }));
                 // Set the users state to the array of users
-                setUsers(usersArray);
-    
                 // Filter the users array to get only the members
-                let arrayMembers = usersArray.filter(user => user.member === true || user.isMember === true);
+                let arrayMembers = usersArray.filter((user: Member) => user.member === true || user.isMember === true);
     
                 // Sort the members by totalReservations in descending order
-                arrayMembers = arrayMembers.sort((a, b) => b.totalReservations - a.totalReservations);
+                arrayMembers = arrayMembers.sort((a, b) => (b.totalReservations || 0) - (a.totalReservations || 0));
     
                 // Get only the top 5 members
                 arrayMembers = arrayMembers.slice(0, 5);
@@ -36,7 +43,7 @@ const Dashboard = () => {
                 setMembers(arrayMembers);
     
                 // Filter the users array to get only the members requests
-                const arrayMemberRequests = usersArray.filter(user => user.membershipStatus === "Requested");
+                const arrayMemberRequests = usersArray.filter((user: Member) => user.membershipStatus === "Requested");
     
                 // Set the memberRequests state to the array of member requests
                 setMemberRequests(arrayMemberRequests);
