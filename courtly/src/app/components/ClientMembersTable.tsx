@@ -40,7 +40,7 @@ const ClientMembersTable = ({ initialMembers }) => {
             const date = new Date(year, month - 1, day);
         
             // Format the date using options
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             return date.toLocaleDateString('en-US', options);
         }
     }

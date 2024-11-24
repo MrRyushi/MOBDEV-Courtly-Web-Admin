@@ -6,21 +6,33 @@ import { ref, get, update } from "firebase/database"; // Import these functions
 import Link from 'next/link';
 
 const MemberRequestsPage = () => {
-    const [users, setUsers] = useState([]);
-    const [requests, setRequests] = useState([]);
+    interface User {
+        id: string;
+        membershipStatus: string;
+        fullName?: string;
+        email?: string;
+        dateRequested?: string;
+    }
+    
+    const [requests, setRequests] = useState<User[]>([]);
 
     useEffect(() => {
         // Get a reference to the 'users' node
         const usersRef = ref(database, 'users');
         get(usersRef).then((snapshot) => {
             if (snapshot.exists()) {
-                const usersArray = Object.entries(snapshot.val()).map(([id, data]) => ({
-                    id, 
-                    ...data, 
-                }));
+                const usersArray = Object.entries(snapshot.val()).map(([id, data]) => {
+                    const userData = data as { membershipStatus?: string; fullName?: string; email?: string; dateRequested?: string };
+                    return {
+                        id,
+                        membershipStatus: userData.membershipStatus || '',
+                        fullName: userData.fullName || '',
+                        email: userData.email || '',
+                        dateRequested: userData.dateRequested || '',
+                        ...(typeof data === 'object' && data !== null ? userData : {}),
+                    };
+                });
                 // Set the users state to the array of users
-                setUsers(usersArray);
-    
                 // Filter the users array to get only the members
                 const arrayRequests = usersArray.filter(user => user.membershipStatus === "Requested");
     
@@ -94,7 +106,7 @@ const MemberRequestsPage = () => {
             const date = new Date(year, month - 1, day);
         
             // Format the date using options
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             return date.toLocaleDateString('en-US', options);
         }
     }

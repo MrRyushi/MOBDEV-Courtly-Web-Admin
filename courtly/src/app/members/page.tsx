@@ -5,26 +5,33 @@ import Link from 'next/link';
 import { database} from '../firebaseConfig'
 import { ref, get } from "firebase/database"; // Import these functions
 
+interface User {
+    id: string;
+    fullName: string;
+    email: string;
+    member: boolean;
+    [key: string]: string | boolean; // Allow additional properties
+}
+
 
 const MembersPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [users, setUsers] = useState([]);
-    const [members, setMembers] = useState([]);
+    const [members, setMembers] = useState<User[]>([]);
 
     useEffect(() => {
         // Get a reference to the 'users' node
         const usersRef = ref(database, 'users');
         get(usersRef).then((snapshot) => {
             if (snapshot.exists()) {
-                const usersArray = Object.entries(snapshot.val()).map(([id, data]) => ({
-                    id, 
-                    ...data, 
-                }));
+                const usersArray = Object.entries(snapshot.val()).map(([id, data]) => {
+                    if (typeof data === 'object' && data !== null) {
+                        return { id, ...data } as User;
+                    }
+                    return undefined;
+                });
                 // Set the users state to the array of users
-                setUsers(usersArray);
-    
                 // Filter the users array to get only the members
-                const arrayMembers = usersArray.filter(user => user.member === true);
+                const arrayMembers = usersArray.filter((user): user is User => user !== undefined && user.member === true);
     
                 // Set the members state to the top 5 members
                 setMembers(arrayMembers);
