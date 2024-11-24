@@ -1,45 +1,54 @@
+'use client'
 import CourtBtn from '../components/CourtBtn';
 import Link from 'next/link'
 import ClientMembersTable from '../components/ClientMembersTable';
+import { database} from '../firebaseConfig'
+import { useEffect, useState } from 'react';
+import { ref, get } from "firebase/database"; // Import these functions
 
 const Dashboard = () => {
-    const members = [
-        {
-          fullName: "John Doe",
-          email: "john@example.com",
-          memberSince: "2020-01-01",
-          totalReservations: 5,
-          recentReservation: "2024-10-10",
-        },
-        {
-          fullName: "Jane Smith",
-          email: "jane@example.com",
-          memberSince: "2021-02-02",
-          totalReservations: 8,
-          recentReservation: "2024-10-09",
-        },
-        {
-          fullName: "Sam Green",
-          email: "sam@example.com",
-          memberSince: "2022-03-03",
-          totalReservations: 10,
-          recentReservation: "2024-10-08",
-        },
-        {
-          fullName: "Alice Brown",
-          email: "alice@example.com",
-          memberSince: "2023-04-04",
-          totalReservations: 3,
-          recentReservation: "2024-10-07",
-        },
-        {
-          fullName: "Bob White",
-          email: "bob@example.com",
-          memberSince: "2024-05-05",
-          totalReservations: 4,
-          recentReservation: "2024-10-06",
-        },
-    ];
+    const [users, setUsers] = useState([]);
+    const [members, setMembers] = useState([]);
+    const [memberRequests, setMemberRequests] = useState([]);
+
+    useEffect(() => {
+        // Get a reference to the 'users' node
+        const usersRef = ref(database, 'users');
+        get(usersRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const usersArray = Object.entries(snapshot.val()).map(([id, data]) => ({
+                    id, 
+                    ...data, 
+                }));
+                // Set the users state to the array of users
+                setUsers(usersArray);
+    
+                // Filter the users array to get only the members
+                let arrayMembers = usersArray.filter(user => user.member === true || user.isMember === true);
+    
+                // Sort the members by totalReservations in descending order
+                arrayMembers = arrayMembers.sort((a, b) => b.totalReservations - a.totalReservations);
+    
+                // Get only the top 5 members
+                arrayMembers = arrayMembers.slice(0, 5);
+    
+                // Set the members state to the top 5 members
+                setMembers(arrayMembers);
+    
+                // Filter the users array to get only the members requests
+                const arrayMemberRequests = usersArray.filter(user => user.membershipStatus === "Requested");
+    
+                // Set the memberRequests state to the array of member requests
+                setMemberRequests(arrayMemberRequests);
+            } else {
+                console.log("No data available");
+            }
+           
+        }).catch((error) => {
+            console.log(error);    
+        });
+    }, []);
+    
 
     const courtNames = [
         "Alpha",
@@ -75,7 +84,7 @@ const Dashboard = () => {
                             <div className="group hover:bg-darkBeige rounded-2xl transition duration-300 ease-in-out"> 
                                 <Link href="/members" passHref>
                                     <div className='cursor-pointer p-2'> {/* Add padding for better hover effect */}  
-                                        <h2 className='font-bold text-4xl md:text-center' id='currentMembers'>34</h2>
+                                        <h2 className='font-bold text-4xl md:text-center' id='currentMembers'>{members.length}</h2>
                                         <p className='md:text-center font-poppins font-light '>Current Members</p>
                                     </div>
                                 </Link>
@@ -87,7 +96,7 @@ const Dashboard = () => {
                             <div className="group hover:bg-darkBeige rounded-2xl transition duration-300 ease-in-out"> 
                                 <Link href="/member_requests" passHref>
                                     <div className='cursor-pointer p-2'> {/* Add padding for better hover effect */}
-                                        <h2 className='font-bold text-4xl md:text-center' id='currentMembers'>16</h2>
+                                        <h2 className='font-bold text-4xl md:text-center' id='currentMembers'>{memberRequests.length}</h2>
                                         <p className='md:text-center font-poppins font-light'>Member Requests</p>
                                     </div>
                                 </Link>

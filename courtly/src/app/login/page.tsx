@@ -1,8 +1,42 @@
-import React from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
+'use client'
+import React, { useState } from 'react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { database} from '../firebaseConfig'
+import { ref, child, get } from "firebase/database";
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const router = useRouter();
+
+  const handleLogin = (e) => {
+    e.preventDefault(); // Prevents page reload on form submit
+    let adminEmail = 'courtly.admin@gmail.com';
+    let adminPassword = 'password';
+
+    
+   const dbRef = ref(database);
+  get(child(dbRef, `admin`)).then((snapshot) => {
+    if (snapshot.exists()) {
+      adminEmail = snapshot.val().email;
+      adminPassword = snapshot.val().password;
+
+      if (email === adminEmail && password === adminPassword) {
+        // Redirect to dashboard if credentials match
+        router.push('/dashboard');
+      } else {
+        // Display error message if credentials are incorrect
+        setError('Invalid email or password');
+      }
+    } else {
+      console.log("No data available");
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+  };
 
   return (
     <div className="flex justify-center items-center h-screen bg-third px-4">
@@ -29,21 +63,38 @@ const Login = () => {
             <h1 className="text-2xl text-center font-poppins font-medium mb-2">Welcome back!</h1>
             <p className="font-poppins text-xs font-light text-center mb-2">Please enter your details</p>
 
-            <div className="px-12 mt-5">
+            <form onSubmit={handleLogin} className="px-12 mt-5">
               <label className="font-poppins text-xs font-light">Email</label>
-              <input type="text" className="border-b border-black w-full p-2"/>
+              <input
+                type="text"
+                className="border-b border-black w-full p-2"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
               <label className="font-poppins text-xs font-light">Password</label>
-              <input type="text" className="border-b border-black w-full p-2"/>
-            </div>
+              <input
+                type="password"
+                className="border-b border-black w-full p-2"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
 
-            <div className="flex justify-center px-12">
-              <Link className="bg-semiBlack text-white w-full px-10 py-2 rounded-3xl mt-4 text-center" href={'/dashboard'}>Login</Link>
-            </div>
+              {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+
+              <div className="flex justify-center">
+                <button
+                  type="submit" // Changed to submit
+                  className="bg-semiBlack text-white w-full px-10 py-2 rounded-3xl mt-4 text-center"
+                >
+                  Login
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
