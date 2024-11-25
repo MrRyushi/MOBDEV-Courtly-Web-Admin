@@ -13,9 +13,9 @@ const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault(); // Prevents page reload on form submit
-    let adminEmail = 'courtly.admin@gmail.com';
-    let adminPassword = 'password';
 
+    let adminEmail = '';
+    let adminPassword = '';
     
    const dbRef = ref(database);
   get(child(dbRef, `admin`)).then((snapshot) => {
