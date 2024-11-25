@@ -59,4 +59,5 @@ Before running the project, ensure you have the following installed:
   http://localhost:3000
   ```
 - Login as an Admin: Use your credentials to access the dashboard.
+- You can also use the hosted version on vercel: `https://courtly-admin.vercel.app`
   
