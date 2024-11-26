@@ -51,7 +51,7 @@ const MembersPage = () => {
     );
 
     return (
-        <div className="flex justify-center items-center h-auto md:h-screen bg-first p-3 md:px-16 md:py-24">
+        <div className="flex justify-center items-center min-h-screen bg-first p-3 md:px-16 md:py-24">
             <div className="space-y-5 w-screen">
                 <div className="bg-fourth p-12 md:p-16 lg:p-20 font-bold rounded-2xl">
                     <h1 className="text-4xl font-poppins mb-4">Members</h1>
