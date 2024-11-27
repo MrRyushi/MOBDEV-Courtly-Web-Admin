@@ -69,7 +69,7 @@ const Dashboard = () => {
     ];
 
     return (
-        <div className='flex justify-center items-center h-auto 2xl:h-screen'>
+        <div className='flex justify-center items-center min-h-screen'>
             <div className='md:h-screen 2xl:h-screen w-screen'>
                 <div className='bg-first md:h-2/6 xl:h-1/4 px-3 py-5 md:py-12 md:px-16 space-y-6'>
                     <div>
